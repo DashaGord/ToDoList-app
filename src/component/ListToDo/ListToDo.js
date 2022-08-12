@@ -2,22 +2,16 @@ import './ListToDo.css';
 
 import ListToDoItem from "../ListToDo-item/ListToDo-item";
 
-//В компонент приходит data. Массив с объектами для новых компонентов. Перебираем элементы в функции. Callback функция возвращает
-// компонент в котором пропс name. Вытащенный из объекта в компоненте App.js
-//В {elements} массив с компонентами.
+//Добавляем key в компонент
 
 
 const ListToDo = ({data}) => {
 
-    //Работа с данными.Данные из пропса запускаем в методе map.
-    // Внутри callback функция, где item каждый отдельный элемент(последовательно идет в массиве)
-    //Возвращаем компонент. Использую spread. Разворачиваем item
-    //То же самое, что и name={item.name}
-
-
     const elements = data.map(item => {
+        //Из объекта item вытаскиваем отдельно id. Остальные свойства, которые потом будет добавлять в itemProps
+        const {id, ...itemProps} = item;
         return (
-            <ListToDoItem {...item}/>
+            <ListToDoItem key={id} {...itemProps}/>
         )
     })
 
@@ -32,4 +26,5 @@ const ListToDo = ({data}) => {
 
 export default ListToDo;
 
-// Какие-то вымышленные задачи. Используем этот пропс в ListToDoItem.
+
+

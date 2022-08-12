@@ -21,5 +21,3 @@ const ListToDoItem = ({name}) => {
 
 export default ListToDoItem;
 
-//Передаем пропс из ListToDoItem. В нем содержится свойство name. Подставляем в нужную строчку.
-//Можно использовать props. Тут применяю деструктуризацию

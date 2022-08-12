@@ -6,10 +6,12 @@ import ToDoAddForm from "./component/ToDo-add-form/ToDo-add-form";
 
 function App() {
 
+    //Добавляем уникальный идентификатор(id). В консоле есть ошибка
+
     const data = [
-        {name: "Погулять с собакой"},
-        {name: "Выбросить мусор"},
-        {name: "Сделать проект"},
+        {name: "Погулять с собакой", id: 1},
+        {name: "Выбросить мусор", id: 2},
+        {name: "Сделать проект", id: 3},
     ];
 
     return (
@@ -28,6 +30,3 @@ function App() {
 
 export default App;
 
-
-//const data = массив с данными.
-// Передаем массив данных data
