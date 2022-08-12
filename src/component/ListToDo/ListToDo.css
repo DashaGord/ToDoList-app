@@ -1,0 +1,12 @@
+.app-list-div{
+    max-height: 289px; /*изменить больше*/
+    overflow: scroll;
+    overflow-x: hidden;
+    border-radius: 0 10px;
+}
+.app-list {
+    background-color: #90a9e7;
+    border-radius: 1px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.20);
+    color: white;
+}

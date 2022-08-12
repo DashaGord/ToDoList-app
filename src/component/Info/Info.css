@@ -1,0 +1,8 @@
+.app-info{
+    height: 80px;
+    padding: 0;
+    border-radius: 10px 0 0 0;
+    background-color: #90a9e7;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.20);
+    color: white;
+}
