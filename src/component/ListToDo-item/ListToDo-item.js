@@ -1,9 +1,9 @@
 import './ListToDo-item.css';
 
-const ListToDoItem = () => {
+const ListToDoItem = ({name}) => {
     return (
         <li className="list-group-item d-flex justify-content-between">
-            <span className="list-group-item-label">Заметка</span>
+            <span className="list-group-item-label">{name}</span>
             <div className="d-flex justify-content-center align-items-center">
                 <button type="button"
                         className="btn-square-check btn-sm ">
@@ -20,3 +20,6 @@ const ListToDoItem = () => {
 }
 
 export default ListToDoItem;
+
+//Передаем пропс из ListToDoItem. В нем содержится свойство name. Подставляем в нужную строчку.
+//Можно использовать props. Тут применяю деструктуризацию

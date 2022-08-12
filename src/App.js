@@ -5,11 +5,18 @@ import ListToDo from "./component/ListToDo/ListToDo";
 import ToDoAddForm from "./component/ToDo-add-form/ToDo-add-form";
 
 function App() {
+
+    const data = [
+        {name: "Погулять с собакой"},
+        {name: "Выбросить мусор"},
+        {name: "Сделать проект"},
+    ];
+
     return (
         <div className="App">
             <div className="left">
                 <Info/>
-                <ListToDo/>
+                <ListToDo data={data}/>
             </div>
             <div className="right">
                 <ToDoAddForm/>
@@ -20,3 +27,7 @@ function App() {
 }
 
 export default App;
+
+
+//const data = массив с данными.
+// Передаем массив данных data

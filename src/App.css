@@ -7,11 +7,12 @@
 
 .left {
   display: inline-block;
+  width: 34%;
 }
 .right {
   display: inline-block;
   vertical-align: top;
-
+  width:65%;
 }
 
 
