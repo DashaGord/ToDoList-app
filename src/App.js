@@ -2,6 +2,8 @@ import './App.css';
 
 import {Component} from "react";
 
+import nextId from "react-id-generator";
+
 import Info from "./component/Info/Info";
 import ListToDo from "./component/ListToDo/ListToDo";
 import ToDoAddForm from "./component/ToDo-add-form/ToDo-add-form";
@@ -19,9 +21,6 @@ class App extends Component {
         }
     }
 
-    // Метод принимает уникальный идентификатор. Передаем его в компонент ListToDoItem. Из стейта вытаскиваем data.
-    //По id ищем нужный объект внутри массива для удаления. Дальше меняем стейт, что бы изменить состояние
-    //Что бы найти нужный объект необходим его индекс. В переменной индекс вызываем метод findIndex. Callback запускается если функция вернет true, из метода будет возвращаться номер элемента.
     deleteItem = (id) => {
         this.setState(({data}) => {
             const index = data.findIndex(elem => elem.id === id);
@@ -36,6 +35,18 @@ class App extends Component {
         })
     }
 
+    addToDo = ( name ) => {
+        //создаем новую переменную с новыми объектами + беру готовый пакет из npm по генерации рандомного id
+        const newToDo ={
+            name,
+            id: nextId()
+        };
+        // Создает новый массив (он не трогает предыдущий).
+       this.setState(({data}) => (
+           {data: [...data, newToDo]})
+       );
+    }
+
     render() {
 
         return (
@@ -46,7 +57,7 @@ class App extends Component {
                               onDelete={this.deleteItem}/>
                 </div>
                 <div className="right">
-                    <ToDoAddForm/>
+                    <ToDoAddForm onAdd={this.addToDo}/>
                 </div>
             </div>
 

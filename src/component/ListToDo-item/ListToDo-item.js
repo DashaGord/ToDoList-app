@@ -1,7 +1,7 @@
 import './ListToDo-item.css';
 
-const ListToDoItem = (props) => {
-    const {name, onDelete} = props;
+const ListToDoItem = ({name, onDelete}) => {
+    // const {name, onDelete} = props;
 
     return (
         <li className="list-group-item d-flex justify-content-between">
