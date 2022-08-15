@@ -9,6 +9,13 @@ import ListToDo from "./component/ListToDo/ListToDo";
 import ToDoAddForm from "./component/ToDo-add-form/ToDo-add-form";
 import SearchBar from "./component/SearchBar/SearchBar";
 
+const MAX_WIDTH = 1000;
+const OFFSET1 = 50;
+const OFFSET2 = 80;
+const MIN_ELEMENT_WIDTH = 200;
+const MAX_ELEMENT_WIDTH = 600;
+
+
 class App extends Component {
 
     constructor(props) {
@@ -21,7 +28,7 @@ class App extends Component {
                 {name: 'Выбросить мусор', id: 3, done: false, processTodo: false}
             ],
             editName: '', //Название редоктируемой задачи
-            editId: null ,  //Id редоктируемой задачи
+            editId: null,  //Id редоктируемой задачи
             bar: ''       //Для поиска
         }
     }
@@ -128,6 +135,42 @@ class App extends Component {
         this.setState({bar}); //Ниже передаем в компонент
     }
 
+    resizer = () => {
+        let resizer = document.getElementById('resizerX');   //находим resizer
+        resizer.mousemove = (e) => this.resizeX(e.pageX);             //на event.mousemove завязываем лямбда функцию (e) => this.resizeX(e.pageX)
+
+        resizer.onmousedown = function () {                //При событии нажатия на кнопку добавляется два addEventListener
+            document.documentElement.addEventListener('mousemove', resizer.doDrag); //Когда происходит движение
+            document.documentElement.addEventListener('mouseup', resizer.stopDrag); //Когда отпускается кнопка
+        }
+
+        resizer.doDrag = function (e) { //Перетаскивание ползунка
+            resizer.mousemove(e);
+        }
+
+        resizer.stopDrag = function () { //Удаляются установленные листенеры добавленные onmousedown при отпускании кнопки мыши
+            document.documentElement.removeEventListener('mousemove', resizer.doDrag);
+            document.documentElement.removeEventListener('mouseup', resizer.stopDrag);
+        }
+    }
+
+    resizeX = (x) => { //Логика изменения ширины двух элементов 1 и 2
+        if (x > MAX_ELEMENT_WIDTH) {
+            x = MAX_ELEMENT_WIDTH;
+        } else if (x < MIN_ELEMENT_WIDTH) {
+            x = MIN_ELEMENT_WIDTH;
+        }
+
+        let element1 = document.getElementById("element1");
+        element1.style.width = x - OFFSET1 + 'px';                   //динамически меняется ширина элемента 1 в стилистике
+        let element2 = document.getElementById("element2");
+        element2.style.width = MAX_WIDTH - OFFSET2 - x + 'px';       //динамически меняется ширина элемента 2 в стилистике
+    }
+
+    componentDidMount() {
+        this.resizer();
+    }
+
 
     render() {
         const tasks = this.state.data.length; // Для определения общего кол-ва заметок в приложении. Передаем в Info
@@ -135,8 +178,8 @@ class App extends Component {
 
 
         return (
-            <div className="App">
-                <div className="left">
+            <div id="resizeArea" className="App">
+                <div id="element1" className="left">
                     <Info tasks={tasks}/>
                     <SearchBar onUpdateSearch={this.onUpdateSearch}/>
                     <ListToDo data={visibleData}
@@ -146,7 +189,8 @@ class App extends Component {
                               onDone={this.onDone}
                               editId={this.state.editId}/>
                 </div>
-                <div className="right">
+                <div id="resizerX" className="inline"></div>
+                <div id="element2" className="right">
                     <ToDoAddForm onAdd={this.addToDo} onEdit={this.editToDo} ref={this.formRef}/>
                 </div>
             </div>

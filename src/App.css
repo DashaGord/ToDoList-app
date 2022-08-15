@@ -5,6 +5,32 @@
   background-color: burlywood;
 }
 
+#resizeArea {
+  width:1000px;
+}
+
+.element {
+  border: 1px solid #999999;
+  border-radius: 4px;
+  margin: 5px;
+  padding: 5px;
+  display: inline-block;
+}
+
+.inline {
+  display: inline-block;
+  height: 100px;
+  vertical-align: middle;
+}
+
+#resizerX {
+  height: 400px;
+  vertical-align: baseline;
+  cursor: e-resize;
+  width: 1%;
+  background: rgba(205, 153, 215, 0.99);
+}
+
 .left {
   display: inline-block;
   width: 34%;

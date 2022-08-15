@@ -50,5 +50,6 @@
     text-decoration: underline;
 }
 .list-group-item.is-edit .list-group-item-label{
-    background: rgba(253, 104, 104, 0.4);
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.20);
+    background: rgb(230, 232, 253);
 }

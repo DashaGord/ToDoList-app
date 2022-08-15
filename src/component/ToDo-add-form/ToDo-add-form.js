@@ -49,12 +49,14 @@ class ToDoAddForm extends Component {
                 <form
                     className="add-form"
                     onSubmit={this.onSubmit}>
-                    <input
-                        id="last_name"
-                        name="last_name"
-                        type="hidden"
-                        value={id}
-                    />
+                    {id !== null &&
+                        <input
+                            id="editId"
+                            name="editId"
+                            type="hidden"
+                            value={id}
+                        />
+                    }
                     <textarea
                         className="form-control"
                         id="exampleFormControlTextarea1"
