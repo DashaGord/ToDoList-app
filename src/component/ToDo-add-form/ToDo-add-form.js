@@ -6,6 +6,7 @@ class ToDoAddForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: null ,
             name: ''
         }
     }
@@ -20,32 +21,48 @@ class ToDoAddForm extends Component {
     }
 
     //Повесим onSubmit на форму для отправки. Создаем метод
-    onSubmit = (e) =>{
+    onSubmit = (e) => {
         e.preventDefault();                       // отмена стандартного поведения браузера
-        this.props.onAdd(this.state.name);        // из App.js передаем функцию пропсам
+        if(this.state.id === null){
+            this.props.onAdd(this.state.name);        // из App.js передаем функцию пропсам
+        } else {
+            this.props.onEdit({
+                id:this.state.id,
+                name:this.state.name
+            });
+        }
+
         this.setState({
+            id: null ,
             name: ''
-        })                                        //Записываем в стейт значение из textarea и передаем его в App.js
+        });                                       //Записываем в стейт значение из textarea и передаем его в App.js. onAdd или onEdit
     }
 
+
     render() {
-        const {name} = this.state;
+        const {id, name} = this.state;
+        const header = id === null ? "Добавьте заметку" : "Редактируем заметку"; //Меняем h3 в зависимости от действия
 
         return (
             <div className="app-add-form">
-                <h3>Добавьте заметку</h3>
+                <h3>{header}</h3>
                 <form
                     className="add-form"
-                    onSubmit = {this.onSubmit}>
-
-                <textarea
-                    className="form-control"
-                    id="exampleFormControlTextarea1"
-                    rows="3"
-                    placeholder="Введите текст"
-                    onChange={this.handelChange}
-                    name='name'
-                    value={name}/>
+                    onSubmit={this.onSubmit}>
+                    <input
+                        id="last_name"
+                        name="last_name"
+                        type="hidden"
+                        value={id}
+                    />
+                    <textarea
+                        className="form-control"
+                        id="exampleFormControlTextarea1"
+                        rows="3"
+                        placeholder="Введите текст"
+                        onChange={this.handelChange}
+                        name='name'
+                        value={name}/>
                     <button type="submit"
                             className="btn btn-outline-light">Сохранить
                     </button>

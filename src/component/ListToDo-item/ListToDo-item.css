@@ -24,9 +24,31 @@
 }
 
 .list-group-item .btn-square-check {
-    color: rgba(92, 224, 62, 0.96);
+    color: rgba(12, 96, 2, 0.96);
+}
+.list-group-item .btn-person-running {
+    color: rgba(4, 184, 243, 0.96);
 }
 
 .list-group-item .btn-trash {
     color: #e5383b;
+}
+
+.name-span {
+    color: #797171;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.list-group-item.done .list-group-item-label{
+    color: #7efa02;
+    text-decoration: line-through;
+}
+.list-group-item.processTodo .list-group-item-label{
+    color: rgba(4, 184, 243, 0.96);
+    text-decoration: underline;
+}
+.list-group-item.is-edit .list-group-item-label{
+    background: #e5383b;
 }

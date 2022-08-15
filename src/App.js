@@ -1,6 +1,6 @@
 import './App.css';
 
-import {Component} from "react";
+import {Component, createRef} from "react";
 
 import nextId from "react-id-generator";
 
@@ -12,12 +12,15 @@ class App extends Component {
 
     constructor(props) {
         super(props);
+        this.formRef = createRef();
         this.state = {
             data: [
-                {name: 'Купить еды', id: 1},
-                {name: 'Убрать шкаф', id: 2},
-                {name: 'Выбросить мусор', id: 3}
-            ]
+                {name: 'Купить еды', id: 1, done: false, processTodo: false},
+                {name: 'Убрать шкаф', id: 2, done: false, processTodo: false},
+                {name: 'Выбросить мусор', id: 3, done: false, processTodo: false}
+            ],
+            editName: '', //Название редоктируемой задачи
+            editId: ''    //Id редоктируемой задачи
         }
     }
 
@@ -35,29 +38,97 @@ class App extends Component {
         })
     }
 
-    addToDo = ( name ) => {
+    addToDo = (name) => {
         //создаем новую переменную с новыми объектами + беру готовый пакет из npm по генерации рандомного id
-        const newToDo ={
+        const newToDo = {
             name,
-            id: nextId()
+            id: nextId(),
+            done: false,
+            processTodo: false
         };
         // Создает новый массив (он не трогает предыдущий).
-       this.setState(({data}) => (
-           {data: [...data, newToDo]})
-       );
+        this.setState(({data}) => (
+            {data: [...data, newToDo]})
+        );
     }
 
+    editToDo = ({id, name}) => {
+        const data = this.state.data;
+        const index = data.findIndex(edit => edit.id === id);
+        const old = data[index];
+
+        old.name = name;
+        this.setState({
+            data: data,
+            editId: null,
+            editName: ''
+        })
+    }
+
+
+    handleEdit = (id) => {
+        this.setState(({data}) => {
+            const index = data.findIndex(edit => edit.id === id); //получаем индекс элемента с которым будем работать
+            const old = data[index];                              //создаем копию, что бы можно было потом менять
+
+            return {
+                data: data,
+                editName: old.name,
+                editId: old.id
+            }
+        })
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // Вызывается каждый раз при обновление state App.js
+        this.formRef.current.setState({ //При каждом обновление мы обновляем стейт ToDoAddForm через ref
+            name: this.state.editName,  //значения из одного стейта перемещаем в другой стейт
+            id: this.state.editId
+        });
+    }
+
+
+    onProcess = (id) => {
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if (item.id === id) {
+                    return {...item, processTodo: !item.processTodo, done: false}
+                }
+                return item;
+            })
+        }))
+    }
+
+
+    onDone = (id) => {
+        //метод изменяет значение done на противоположное у элемента
+        this.setState(({data}) => ({                 // возврат объекта со свойством data. Применяем map для нового массива
+            data: data.map(item => {                      //Callback проходит по каждому объекту
+                if (item.id === id) {                      //Если совпали id, то нашли нужный
+                    return {...item, done: !item.done, processTodo: false}    //Возвращаем новый объект. Содержит старые свойства. Меняется done на противоположный
+                }
+                return item;                               // Если не совпало, то просто объект вернем
+            })
+        }))
+    }
+
+
     render() {
+        const tasks = this.state.data.length; //для определения общего кол-ва заметок в приложении. Передаем в Info
 
         return (
             <div className="App">
                 <div className="left">
-                    <Info/>
+                    <Info tasks={tasks}/>
                     <ListToDo data={this.state.data}
-                              onDelete={this.deleteItem}/>
+                              onDelete={this.deleteItem}
+                              onEdit={this.handleEdit}
+                              onProcess={this.onProcess}
+                              onDone={this.onDone}
+                              editId={this.state.editId}/>
                 </div>
                 <div className="right">
-                    <ToDoAddForm onAdd={this.addToDo}/>
+                    <ToDoAddForm onAdd={this.addToDo} onEdit={this.editToDo} ref={this.formRef}/>
                 </div>
             </div>
 
@@ -66,4 +137,3 @@ class App extends Component {
 }
 
 export default App;
-
