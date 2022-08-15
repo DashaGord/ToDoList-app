@@ -7,6 +7,7 @@ import nextId from "react-id-generator";
 import Info from "./component/Info/Info";
 import ListToDo from "./component/ListToDo/ListToDo";
 import ToDoAddForm from "./component/ToDo-add-form/ToDo-add-form";
+import SearchBar from "./component/SearchBar/SearchBar";
 
 class App extends Component {
 
@@ -20,7 +21,8 @@ class App extends Component {
                 {name: 'Выбросить мусор', id: 3, done: false, processTodo: false}
             ],
             editName: '', //Название редоктируемой задачи
-            editId: ''    //Id редоктируемой задачи
+            editId: null ,  //Id редоктируемой задачи
+            bar: ''       //Для поиска
         }
     }
 
@@ -112,15 +114,32 @@ class App extends Component {
         }))
     }
 
+    searchToDo = (items, bar) => {       //Реализую фильтр поиска. Передаем два элемента. Строчку по которой будет поиск и фильтруемый массив данных
+        if (bar.length === 0) {         //Если строчка по поиску пустая, возвращаем обычный массив
+            return items;
+        }
+        return items.filter(item => {
+            //Делаю совпадение по строчке
+            return item.name.indexOf(bar) > -1
+        })
+    }
+
+    onUpdateSearch = (bar) => { //Обновление поиска. Принимает строчку и устанавливает состояние внутри главного компонента(App.js)
+        this.setState({bar}); //Ниже передаем в компонент
+    }
+
 
     render() {
-        const tasks = this.state.data.length; //для определения общего кол-ва заметок в приложении. Передаем в Info
+        const tasks = this.state.data.length; // Для определения общего кол-ва заметок в приложении. Передаем в Info
+        const visibleData = this.searchToDo(this.state.data, this.state.bar);
+
 
         return (
             <div className="App">
                 <div className="left">
                     <Info tasks={tasks}/>
-                    <ListToDo data={this.state.data}
+                    <SearchBar onUpdateSearch={this.onUpdateSearch}/>
+                    <ListToDo data={visibleData}
                               onDelete={this.deleteItem}
                               onEdit={this.handleEdit}
                               onProcess={this.onProcess}
